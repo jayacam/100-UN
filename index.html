@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Governance & Global Divides - Interactive Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .quiz-container {
+            padding: 40px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .topic-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            transform: translateX(5px);
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option-letter {
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option-text {
+            font-size: 1.1rem;
+            color: #495057;
+        }
+
+        /* States after double-click */
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            animation: correctPulse 0.6s ease;
+        }
+
+        .option.correct .option-letter {
+            background: #28a745;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+            animation: shake 0.5s ease;
+        }
+
+        .option.incorrect .option-letter {
+            background: #dc3545;
+        }
+
+        .option.revealed {
+            pointer-events: none;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .status-icon {
+            margin-left: auto;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option.correct .status-icon,
+        .option.incorrect .status-icon {
+            opacity: 1;
+        }
+
+        .explanation {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-left: 5px solid #667eea;
+            border-radius: 0 12px 12px 0;
+            padding: 25px;
+            margin-top: 20px;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .explanation-header {
+            font-weight: bold;
+            color: #2a5298;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .explanation-text {
+            line-height: 1.7;
+            color: #495057;
+            font-size: 1.05rem;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .question-counter {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #856404;
+            font-weight: 500;
+        }
+
+        .score-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            font-weight: bold;
+            color: #2a5298;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 20px;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+            }
+            
+            .option {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="score-display">
+        Score: <span id="score">0</span>/100
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>🌍 Global Governance & Global Divides</h1>
+            <p>Contemporary International Relations - Interactive Assessment</p>
+        </header>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="quiz-container">
+            <div class="instructions">
+                💡 <strong>Double-click</strong> on any option to reveal if it's correct or incorrect!
+            </div>
+
+            <div id="quizContent">
+                <!-- Question content will be inserted here -->
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">
+                    ← Previous
+                </button>
+                <div class="question-counter">
+                    Question <span id="currentQ">1</span> of 100
+                </div>
+                <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">
+                    Next →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data - All 100 Questions
+        const quizData = [
+            // PART I: THE ROLE OF THE UNITED NATIONS (1-35)
+            {
+                topic: "Global Governance",
+                question: "Global governance is best defined as:",
+                options: [
+                    "The rule of international law over sovereign states",
+                    "Collective management of international affairs through institutions, rules, and processes without a world government",
+                    "The dominance of powerful countries over international organizations",
+                    "The elimination of national borders for economic purposes"
+                ],
+                correct: 1,
+                explanation: "Global governance refers to the collective management of international affairs through institutions, rules, norms, and processes that coordinate actions of states, international organizations, and non-state actors in the absence of a world government. It emphasizes cooperation rather than domination or elimination of sovereignty."
+            },
+            {
+                topic: "Global Governance",
+                question: "Which of the following is NOT a primary reason why global governance is necessary?",
+                options: [
+                    "Complex interdependence of economic and security issues",
+                    "Collective action problems requiring coordinated responses",
+                    "Maintenance of absolute state sovereignty in all matters",
+                    "Rapid globalization creating shared vulnerabilities"
+                ],
+                correct: 2,
+                explanation: "Global governance actually requires states to pool sovereignty in certain areas to address transnational challenges. The other options are valid reasons: complex interdependence (economic/security issues cross borders), collective action problems (climate change, pandemics require coordination), and rapid globalization creating shared vulnerabilities."
+            },
+            {
+                topic: "Global Problems",
+                question: "Climate change requires international cooperation primarily because:",
+                options: [
+                    "It can only be solved by the largest countries",
+                    "Ecosystems ignore national borders and require collective solutions",
+                    "Developing countries refuse to take action",
+                    "Technology is too expensive for single countries"
+                ],
+                correct: 1,
+                explanation: "Climate change is a transnational issue where greenhouse gases emitted anywhere affect the global atmosphere. The Global North produces historical emissions while the Global South faces disproportionate impacts. The Paris Agreement requires Nationally Determined Contributions from all states because unilateral action is insufficient."
+            },
+            {
+                topic: "Global Problems",
+                question: "The 'tragedy of the commons' in global governance refers to:",
+                options: [
+                    "The failure of private property systems",
+                    "Shared resources being depleted due to lack of coordinated management",
+                    "The success of international environmental agreements",
+                    "The dominance of common law in international courts"
+                ],
+                correct: 1,
+                explanation: "The tragedy of the commons describes how shared resources (oceans, atmosphere, fisheries) are overexploited because individual actors lack incentive to conserve while bearing costs of others' overuse. This requires international governance to establish rules preventing competitive deregulation."
+            },
+            {
+                topic: "Global Problems",
+                question: "Which global problem is characterized by 'contagion effects' requiring multilateral responses?",
+                options: [
+                    "Terrorism only",
+                    "Financial crises and pandemics",
+                    "Border disputes",
+                    "Language preservation"
+                ],
+                correct: 1,
+                explanation: "Financial crises (2008 global recession) and pandemics (COVID-19) demonstrate contagion effects where problems spread rapidly across borders. The 2008 crisis originated in US subprime markets but affected global markets; COVID-19 required coordinated vaccine distribution and travel protocols."
+            },
+            {
+                topic: "UN History",
+                question: "The immediate catalyst for the creation of the United Nations was:",
+                options: [
+                    "The Great Depression",
+                    "World War II and its devastation",
+                    "The success of the League of Nations",
+                    "The Cold War tensions"
+                ],
+                correct: 1,
+                explanation: "World War II (1939-1945) with 70-85 million deaths, the Holocaust, and atomic bombings demonstrated the catastrophic failure of unilateralism and the League. Key conferences (Moscow 1943, Dumbarton Oaks 1944, Yalta 1945, San Francisco 1945) created the UN Charter signed June 26, 1945."
+            },
+            {
+                topic: "UN History",
+                question: "The Dumbarton Oaks Conference (1944) was significant because it:",
+                options: [
+                    "Signed the UN Charter",
+                    "Drafted the initial proposals for the UN Charter",
+                    "Established the veto power system",
+                    "Ended World War II"
+                ],
+                correct: 1,
+                explanation: "At Dumbarton Oaks (August-October 1944), the US, UK, USSR, and China drafted proposals for the UN Charter structure. The veto system was later finalized at Yalta (February 1945), and the Charter was signed at San Francisco (June 1945) by 50 nations."
+            },
+            {
+                topic: "UN History",
+                question: "The Yalta Conference (1945) specifically agreed on:",
+                options: [
+                    "The location of UN headquarters",
+                    "Security Council voting procedures and veto power",
+                    "The Universal Declaration of Human Rights",
+                    "The creation of the International Court of Justice"
+                ],
+                correct: 1,
+                explanation: "The Yalta Conference (February 1945) between Roosevelt, Churchill, and Stalin established that the Security Council would have 5 permanent members with veto power on substantive matters, while procedural matters would require 7 affirmative votes (later 9)."
+            },
+            {
+                topic: "UN History",
+                question: "How many nations participated in the San Francisco Conference that finalized the UN Charter?",
+                options: [
+                    "26",
+                    "44",
+                    "50",
+                    "51"
+                ],
+                correct: 2,
+                explanation: "The San Francisco Conference (April-June 1945) had 50 participating nations that finalized the UN Charter. Poland, not present at San Francisco, signed later to become the 51st original member. The Charter entered into force October 24, 1945."
+            },
+            {
+                topic: "League of Nations",
+                question: "The League of Nations failed partly because the United States:",
+                options: [
+                    "Was expelled for non-payment",
+                    "Never joined despite being proposed by its president",
+                    "Withdrew after the Manchurian crisis",
+                    "Vetoed key resolutions"
+                ],
+                correct: 1,
+                explanation: "President Woodrow Wilson proposed the League (14 Points, 1918) but the US Senate (led by Henry Cabot Lodge) refused ratification due to isolationist sentiment and Article X concerns. Without the US, the League lacked credibility and enforcement capacity."
+            },
+            {
+                topic: "League of Nations",
+                question: "The League of Nations required __________ for all decisions, making action difficult.",
+                options: [
+                    "Simple majority",
+                    "Two-thirds majority",
+                    "Unanimity",
+                    "Security Council approval"
+                ],
+                correct: 2,
+                explanation: "The League Covenant required unanimity for all decisions (Article 5), meaning any member could block action. This contrasted with the UN's majority voting systems and made the League incapable of responding to aggression (Manchuria 1931, Ethiopia 1935)."
+            },
+            {
+                topic: "League of Nations",
+                question: "Japan's invasion of Manchuria (1931) demonstrated the League's weakness because:",
+                options: [
+                    "Japan was immediately expelled",
+                    "The League condemned the action but took no enforcement measures",
+                    "Military force was successfully deployed",
+                    "Economic sanctions were highly effective"
+                ],
+                correct: 1,
+                explanation: "The Lytton Commission (1932) condemned Japan's invasion but the League only recommended non-recognition of Manchukuo. Japan withdrew from the League (1933) and kept the territory. This showed the League's lack of enforcement mechanisms compared to the UN's Chapter VII powers."
+            },
+            {
+                topic: "UN vs League",
+                question: "Unlike the League, the UN Security Council can make decisions with:",
+                options: [
+                    "Unanimity of all members",
+                    "Majority vote, with P5 having veto on substantive matters",
+                    "Approval of the General Assembly only",
+                    "Consent of the parties to the dispute"
+                ],
+                correct: 1,
+                explanation: "The UN Charter Article 27 requires 9 affirmative votes (including concurring votes of P5 for substantive matters). This allows action without unanimity while giving P5 special responsibility. The GA can recommend but not enforce (Article 10-14)."
+            },
+            {
+                topic: "UN Powers",
+                question: "The UN's 'Uniting for Peace' resolution (1950) allows:",
+                options: [
+                    "The Security Council to veto General Assembly decisions",
+                    "The General Assembly to act when the Security Council is deadlocked",
+                    "The Secretary-General to deploy troops unilaterally",
+                    "The ICJ to override Security Council decisions"
+                ],
+                correct: 1,
+                explanation: "Resolution 377A (1950) allows the General Assembly to convene emergency special sessions and make recommendations if the Security Council fails to act due to veto. Used during Korea (1950), Suez (1956), Afghanistan (1980), and Gaza (2023-2024)."
+            },
+            {
+                topic: "UN Powers",
+                question: "Which UN organ has the power to authorize binding military enforcement action?",
+                options: [
+                    "General Assembly",
+                    "Security Council under Chapter VII",
+                    "International Court of Justice",
+                    "ECOSOC"
+                ],
+                correct: 1,
+                explanation: "Article 42 allows the Security Council to take military action to maintain peace. Examples: Korean War (1950), Gulf War (1991). The GA can only recommend (Resolution 377A), while ICJ judgments rely on state compliance or SC enforcement (Article 94)."
+            },
+            {
+                topic: "UN Peace & Security",
+                question: "The UN's promotion of international peace includes all EXCEPT:",
+                options: [
+                    "Preventive diplomacy",
+                    "Peacekeeping operations",
+                    "Unilateral military interventions by member states",
+                    "Sanctions regimes"
+                ],
+                correct: 2,
+                explanation: "The UN Charter prohibits unilateral use of force (Article 2(4)) except self-defense (Article 51). Peacekeeping requires consent of parties, neutrality, and defensive use of force only. Sanctions (Article 41) and preventive diplomacy (Article 33) are Charter-based tools."
+            },
+            {
+                topic: "Human Rights",
+                question: "The Universal Declaration of Human Rights (1948) was adopted by:",
+                options: [
+                    "Security Council resolution",
+                    "General Assembly Resolution 217 A (III)",
+                    "International Court of Justice advisory opinion",
+                    "ECOSOC decision"
+                ],
+                correct: 1,
+                explanation: "Adopted December 10, 1948 (now Human Rights Day) by GA Resolution 217 A (III) with 48 votes in favor, 0 against, 8 abstentions (Soviet bloc, Saudi Arabia, South Africa). Not legally binding itself but foundation for 9 core human rights treaties."
+            },
+            {
+                topic: "Development",
+                question: "The Sustainable Development Goals (SDGs) consist of:",
+                options: [
+                    "8 goals with 18 targets",
+                    "15 goals with 169 targets",
+                    "17 goals with 169 targets",
+                    "20 goals with 100 targets"
+                ],
+                correct: 2,
+                explanation: "The 2030 Agenda (September 2015) replaced the MDGs with 17 SDGs and 169 targets covering poverty, hunger, health, education, gender equality, water, energy, work, inequality, cities, consumption, climate, oceans, biodiversity, justice, and partnerships."
+            },
+            {
+                topic: "Peacekeeping",
+                question: "UN peacekeeping operations are authorized by:",
+                options: [
+                    "The Secretary-General alone",
+                    "The General Assembly by simple majority",
+                    "The Security Council under Chapters VI or VII",
+                    "The International Court of Justice"
+                ],
+                correct: 2,
+                explanation: "Peacekeeping is authorized by Security Council resolutions, typically under Chapter VI (consent-based) or Chapter VII (enforcement). Current operations include UNMISS (South Sudan), MONUSCO (DRC), and MINUSCA (Central African Republic) with 75,000+ personnel total."
+            },
+            {
+                topic: "Humanitarian",
+                question: "The Central Emergency Response Fund (CERF) is managed by:",
+                options: [
+                    "UNICEF",
+                    "UNHCR",
+                    "OCHA (Office for Coordination of Humanitarian Affairs)",
+                    "World Food Programme"
+                ],
+                correct: 2,
+                explanation: "CERF (2006) is managed by OCHA to provide rapid initial funding for sudden-onset crises and underfunded emergencies. It complements slower bilateral donor processes. OCHA coordinates the Inter-Agency Standing Committee cluster approach."
+            },
+            {
+                topic: "General Assembly",
+                question: "The General Assembly is considered the most representative UN organ because:",
+                options: [
+                    "It has the power to veto Security Council decisions",
+                    "All 193 member states participate with equal voting power",
+                    "It meets only once per year",
+                    "Its decisions are legally binding on all states"
+                ],
+                correct: 1,
+                explanation: "The GA operates on 'one state, one vote' (Article 18) regardless of size or power. All 193 members participate, making it the most democratically legitimate UN body. However, its resolutions are generally recommendatory (Article 10), not binding except on budget/internal matters (Article 17)."
+            },
+            {
+                topic: "Security Council",
+                question: "How many permanent members does the UN Security Council have?",
+                options: [
+                    "3",
+                    "5",
+                    "10",
+                    "15"
+                ],
+                correct: 1,
+                explanation: "The P5 (Permanent Five) are China, France, Russia, UK, and US - reflecting 1945 power structure. They have veto power (Article 27(3)) on substantive matters. The Council has 15 total members: 5 permanent and 10 non-permanent elected for 2-year terms."
+            },
+            {
+                topic: "Security Council",
+                question: "Which of the following is NOT a permanent member of the Security Council?",
+                options: [
+                    "Germany",
+                    "France",
+                    "China",
+                    "United Kingdom"
+                ],
+                correct: 0,
+                explanation: "Germany, despite being a major economy and UN contributor, is not a permanent member. The P5 are the WWII victors: China, France, Russia (successor to USSR), UK, and US. Germany serves frequently as non-permanent member (2019-2020) and is a 'G4' nation seeking reform."
+            },
+            {
+                topic: "Security Council",
+                question: "Non-permanent members of the Security Council serve terms of:",
+                options: [
+                    "1 year",
+                    "2 years",
+                    "3 years",
+                    "5 years"
+                ],
+                correct: 1,
+                explanation: "Non-permanent members serve 2-year terms with 5 replaced annually (Article 23). They are elected by GA using regional distribution: African (3), Asia-Pacific (2), Latin American and Caribbean (2), Western European and Others (2), Eastern European (1). Current members include Japan, Switzerland, and Algeria."
+            },
+            {
+                topic: "Veto Power",
+                question: "The veto power in the Security Council applies to:",
+                options: [
+                    "All decisions",
+                    "Procedural matters only",
+                    "Substantive (non-procedural) matters",
+                    "Budgetary issues only"
+                ],
+                correct: 2,
+                explanation: "Article 27(3): P5 can block substantive decisions (peace/security matters, sanctions, new members, Charter amendments). Procedural matters (agenda setting, meeting organization) require 9 votes without veto. The 'double veto' (deciding if matter is procedural) was used frequently during Cold War."
+            },
+            {
+                topic: "Veto Power",
+                question: "In 2023, Russia vetoed a resolution concerning:",
+                options: [
+                    "Climate change financing",
+                    "Cross-border humanitarian aid to Syria",
+                    "Nuclear non-proliferation in Iran",
+                    "Peacekeeping in Cyprus"
+                ],
+                correct: 1,
+                explanation: "July 2023: Russia vetoed renewal of cross-border aid mechanism for Syria (Bab al-Hawa crossing). This was one of 6 vetoes in 2023. Russia also vetoed Mali sanctions (August 2023). These vetoes highlighted how P5 interests can block humanitarian action."
+            },
+            {
+                topic: "Veto Power",
+                question: "The US veto regarding Gaza in 2023-2024 demonstrated:",
+                options: [
+                    "The effectiveness of Security Council action",
+                    "How veto power can paralyze Council response to crises",
+                    "The unanimity of P5 on Middle East issues",
+                    "The irrelevance of the General Assembly"
+                ],
+                correct: 1,
+                explanation: "The US vetoed three Gaza ceasefire resolutions (October 2023, December 2023, November 2024), paralyzing SC action despite global concern. This led to GA emergency special sessions under Uniting for Peace (Resolution 377A), which adopted resolutions with 158 votes but no binding force."
+            },
+            {
+                topic: "ICJ",
+                question: "The International Court of Justice is located in:",
+                options: [
+                    "Geneva, Switzerland",
+                    "New York, USA",
+                    "The Hague, Netherlands",
+                    "Vienna, Austria"
+                ],
+                correct: 2,
+                explanation: "The ICJ sits in the Peace Palace, The Hague, shared with the Permanent Court of Arbitration. It is the principal judicial organ of the UN (Article 92), successor to the PCIJ (League of Nations). 15 judges elected by GA and SC for 9-year terms."
+            },
+            {
+                topic: "ICJ",
+                question: "The ICJ's advisory opinion on Israel's policies in Occupied Palestinian Territory (2024) was requested by:",
+                options: [
+                    "The Security Council",
+                    "The General Assembly",
+                    "The Secretary-General",
+                    "Israel and Palestine jointly"
+                ],
+                correct: 1,
+                explanation: "December 2022 GA Resolution A/RES/77/247 requested the advisory opinion. July 2024 ICJ found Israel's prolonged occupation unlawful, demanded end to settlements, and called for reparations. Advisory opinions are non-binding but authoritative legal interpretations."
+            },
+            {
+                topic: "Secretary-General",
+                question: "The Secretary-General of the UN is appointed by:",
+                options: [
+                    "Direct election by member states",
+                    "General Assembly on recommendation of the Security Council",
+                    "The five permanent members alone",
+                    "The International Court of Justice"
+                ],
+                correct: 1,
+                explanation: "Article 97: GA appoints SG on SC recommendation (requiring P5 consensus). Current SG António Guterres (Portugal, 2017-present) is the 9th Secretary-General. Term is 5 years, renewable once. Regional rotation informal norm (Eastern Europe was Guterres' turn)."
+            },
+            {
+                topic: "Secretary-General",
+                question: "Article 99 of the UN Charter gives the Secretary-General the power to:",
+                options: [
+                    "Veto Security Council resolutions",
+                    "Bring matters threatening international peace to the Security Council's attention",
+                    "Override General Assembly decisions",
+                    "Appoint permanent members of the Security Council"
+                ],
+                correct: 1,
+                explanation: "Article 99 allows the SG to 'bring to the attention of the Security Council any matter which in his opinion may threaten the maintenance of international peace and security.' Used rarely (Congo 1960, Cyprus 1974) but crucial for independent political role."
+            },
+            {
+                topic: "ECOSOC",
+                question: "ECOSOC coordinates with how many specialized agencies?",
+                options: [
+                    "5",
+                    "10",
+                    "15",
+                    "20"
+                ],
+                correct: 2,
+                explanation: "ECOSOC coordinates with 15 specialized agencies including WHO, ILO, UNESCO, IMF, World Bank, ICAO, IMO, ITU, UPU, WMO, WIPO, IFAD, UNIDO, UNWTO, and FAO. These are independent international organizations with cooperation agreements (Articles 57, 63)."
+            },
+            {
+                topic: "ECOSOC",
+                question: "The High-Level Political Forum (HLPF) on Sustainable Development operates under:",
+                options: [
+                    "Security Council",
+                    "General Assembly",
+                    "ECOSOC",
+                    "Trusteeship Council"
+                ],
+                correct: 2,
+                explanation: "HLPF (created 2012, operational 2016) meets under ECOSOC auspices to review SDG progress. Annual meetings in July feature Voluntary National Reviews (VNRs). The 2024 HLPF focused on SDG1 (No Poverty), SDG2 (Zero Hunger), SDG13 (Climate), SDG16 (Justice), and SDG17 (Partnerships)."
+            },
+            {
+                topic: "Trusteeship Council",
+                question: "The Trusteeship Council became inactive in 1994 because:",
+                options: [
+                    "It was abolished by Charter amendment",
+                    "All Trust Territories achieved self-government or independence",
+                    "The General Assembly took over its functions",
+                    "The Cold War ended"
+                ],
+                correct: 1,
+                explanation: "The Council suspended operations November 1, 1994, when Palau (last Trust Territory) became independent. Original 11 territories (including former Japanese mandates and Italian colonies) all achieved self-determination. The Council now meets only when occasion requires (none since 1994)."
+            },
+            {
+                topic: "Trusteeship Council",
+                question: "The success of the Trusteeship Council in making itself obsolete demonstrates:",
+                options: [
+                    "The failure of the UN's decolonization efforts",
+                    "The realization of self-determination principles",
+                    "The irrelevance of international supervision",
+                    "The continuation of colonialism"
+                ],
+                correct: 1,
+                explanation: "The Trusteeship system achieved its purpose: all Trust Territories gained independence or free association. This represents institutional success in self-termination. 17 Non-Self-Governing Territories remain (Western Sahara, etc.) now monitored by GA Fourth Committee and C-24 (Special Committee on Decolonization)."
+            },
+            // PART II: THE GLOBAL DIVIDES (36-100)
+            {
+                topic: "Global Divide",
+                question: "The 'Global Divide' primarily refers to:",
+                options: [
+                    "The separation between Eastern and Western hemispheres",
+                    "Systemic inequalities between developed and developing nations",
+                    "The gap between urban and rural areas only",
+                    "Religious differences between countries"
+                ],
+                correct: 1,
+                explanation: "The Global Divide refers to structural inequalities between wealthy industrialized nations (Global North) and developing nations (Global South) across economic, political, technological, and social dimensions. It represents power asymmetry in global governance, not geography or religion."
+            },
+            {
+                topic: "Cold War",
+                question: "During the Cold War, the 'Third World' referred to:",
+                options: [
+                    "Countries aligned with the Soviet Union",
+                    "Non-aligned, decolonizing nations",
+                    "The poorest countries only",
+                    "NATO member states"
+                ],
+                correct: 1,
+                explanation: "The 'Third World' emerged from the 1955 Bandung Conference and Non-Aligned Movement (1961), representing nations not aligned with either US-led First World (capitalist) or Soviet-led Second World (communist). Included newly independent African and Asian states."
+            },
+            {
+                topic: "Cold War",
+                question: "The Bandung Conference (1955) was significant as the founding moment of:",
+                options: [
+                    "The United Nations",
+                    "The Non-Aligned Movement",
+                    "The European Union",
+                    "NATO"
+                ],
+                correct: 1,
+                explanation: "The Asian-African Conference in Bandung, Indonesia (April 1955) with 29 participating states established the 'Ten Principles of Bandung' and laid groundwork for the Non-Aligned Movement (formalized 1961 in Belgrade). Leaders included Sukarno, Nehru, Nasser, Tito, and Nkrumah."
+            },
+            {
+                topic: "Cold War",
+                question: "The 'Second World' during the Cold War consisted of:",
+                options: [
+                    "Developing African nations",
+                    "Communist bloc countries (USSR and Eastern Europe)",
+                    "Neutral European countries",
+                    "Island nations"
+                ],
+                correct: 1,
+                explanation: "Three Worlds Theory: First World (US and allies), Second World (USSR and Eastern bloc/COMECON), Third World (non-aligned). After Cold War, First World became Global North; Second World collapsed or transitioned; Third World became Global South."
+            },
+            {
+                topic: "Cold War",
+                question: "After the Cold War, the 'First World' became part of:",
+                options: [
+                    "The Global South",
+                    "The Global North",
+                    "The Non-Aligned Movement",
+                    "The Second World"
+                ],
+                correct: 1,
+                explanation: "Post-Cold War, the ideological First World (capitalist democracies) became the Global North based on economic status. The Second World disappeared (Eastern Europe joined Western institutions; Russia became hybrid). Third World became Global South based on development metrics."
+            },
+            {
+                topic: "Terminology",
+                question: "The Global North-South terminology differs from Three Worlds theory by focusing on:",
+                options: [
+                    "Military alliances only",
+                    "Economic development and structural power rather than ideology",
+                    "Religious affiliations",
+                    "Language groups"
+                ],
+                correct: 1,
+                explanation: "Global North/South focuses on structural economic relationships, income levels, and power in global governance (IMF voting shares, WTO influence). It allows for flexibility (rising powers like China) whereas Three Worlds was rigid ideological classification."
+            },
+            {
+                topic: "Geography",
+                question: "Australia and New Zealand are considered part of the Global North despite being geographically Southern because:",
+                options: [
+                    "They are in the Southern Hemisphere",
+                    "Their economic and political characteristics align with developed nations",
+                    "They were never colonized",
+                    "They are members of NATO"
+                ],
+                correct: 1,
+                explanation: "The Global North is socio-economic, not geographical. Australia and New Zealand have high-income economies, advanced infrastructure, stable democracies, and are OECD members. Similarly, Japan (Asian) and Israel (Middle East) are politically/economically Northern despite geography."
+            },
+            {
+                topic: "Geography",
+                question: "Japan is considered part of the Global North primarily due to:",
+                options: [
+                    "Its geographic location in Asia",
+                    "Its high-income economy and G7 membership",
+                    "Its population size",
+                    "Its colonial history"
+                ],
+                correct: 1,
+                explanation: "Japan is G7 member, high-income economy (World Bank), advanced technology/infrastructure, and stable democracy. Despite being Asian geographically, its economic and political characteristics align with Global North. This demonstrates the non-geographical nature of the divide."
+            },
+            {
+                topic: "Geography",
+                question: "The Global North-South division is based on:",
+                options: [
+                    "Strict geographical latitude",
+                    "Socio-economic and political power structures",
+                    "Climate zones only",
+                    "Language families"
+                ],
+                correct: 1,
+                explanation: "The division reflects World-Systems Theory (Wallerstein): core-periphery relations established through colonial extraction, industrialization timing, position in global value chains, and institutional power (IMF/WTO voting weights). Geography is incidental to these structural factors."
+            },
+            {
+                topic: "Theory",
+                question: "World-Systems Theory (Wallerstein) explains the Global Divide through:",
+                options: [
+                    "Cultural differences between civilizations",
+                    "Core-periphery relations established through colonial extraction",
+                    "Religious conflicts",
+                    "Technological determinism"
+                ],
+                correct: 1,
+                explanation: "Immanuel Wallerstein's World-Systems Analysis (1974) describes how the capitalist world-economy creates a division of labor where core states (North) extract surplus from peripheral states (South) through unequal exchange, creating structural dependency."
+            },
+            {
+                topic: "Demographics",
+                question: "The Global North contains approximately what percentage of world population?",
+                options: [
+                    "5%",
+                    "15-18%",
+                    "50%",
+                    "80%"
+                ],
+                correct: 1,
+                explanation: "The Global North contains approximately 1.2-1.4 billion people (15-18% of world population) but controls ~80% of global GDP. This disparity is central to global governance debates about representation and climate justice."
+            },
+            {
+                topic: "Demographics",
+                question: "The Global South contains approximately what percentage of world population?",
+                options: [
+                    "20%",
+                    "40%",
+                    "60%",
+                    "80-85%"
+                ],
+                correct: 3,
+                explanation: "The Global South contains ~6.5-7 billion people (80-85% of world population) but only ~20% of global GDP. This majority status drives demands for greater voice in international institutions (India's 'Voice of Global South' summits 2023-2024)."
+            },
+            {
+                topic: "Economy",
+                question: "The Global North controls approximately what percentage of global GDP?",
+                options: [
+                    "20%",
+                    "40%",
+                    "60%",
+                    "80%"
+                ],
+                correct: 3,
+                explanation: "Despite being ~15% of population, the Global North controls ~80% of global GDP (World Bank data). This wealth concentration reflects historical accumulation, technological advantages, and structural position in global value chains."
+            },
+            {
+                topic: "Demographics",
+                question: "Demographically, the Global North is characterized by:",
+                options: [
+                    "High fertility rates and young populations",
+                    "Aging populations and low fertility rates",
+                    "Rapid population growth",
+                    "High rural populations"
+                ],
+                correct: 1,
+                explanation: "Global North: aging populations (median age 40+), fertility rates below replacement (1.5-1.8), declining rural populations, urbanized (>80%). This creates labor shortages and immigration pressures, contrasting with the South's 'youth bulge'."
+            },
+            {
+                topic: "Demographics",
+                question: "The Global South demographically features:",
+                options: [
+                    "Aging populations and negative growth",
+                    "Young populations with high fertility rates",
+                    "Stable population levels",
+                    "Massive emigration to the North only"
+                ],
+                correct: 1,
+                explanation: "Global South: young populations (median age 18-30), higher fertility rates (though declining), rapid urbanization (often unplanned). The 'youth bulge' represents both challenge (unemployment risk) and opportunity (future workforce, innovation potential)."
+            },
+            {
+                topic: "Economy",
+                question: "High-income economies (Global North) are defined by the World Bank as having GNI per capita above:",
+                options: [
+                    "$1,000",
+                    "$4,000",
+                    "$13,845",
+                    "$50,000"
+                ],
+                correct: 2,
+                explanation: "World Bank 2023 classification: Low income <$1,135; Lower-middle $1,136-4,465; Upper-middle $4,466-13,845; High income >$13,845. This threshold determines Global North status more than geography."
+            },
+            {
+                topic: "Economy",
+                question: "The service sector typically dominates Global North economies at what level?",
+                options: [
+                    "Less than 30% of GDP",
+                    "40-50% of GDP",
+                    "More than 70% of GDP",
+                    "Exactly 50% of GDP"
+                ],
+                correct: 2,
+                explanation: "Post-industrial Global North economies feature service sectors >70% of GDP (finance, technology, healthcare, education). Manufacturing has largely relocated to Global South (China, Vietnam, Mexico), though high-value production remains in North."
+            },
+            {
+                topic: "Politics",
+                question: "Global North countries are generally characterized by:",
+                options: [
+                    "High levels of corruption and weak institutions",
+                    "Stable democratic institutions and rule of law",
+                    "Authoritarian political systems",
+                    "No civil society space"
+                ],
+                correct: 1,
+                explanation: "Generally (with exceptions), Global North features stable democratic institutions, rule of law, strong state capacity, effective taxation, multiparty systems, and civil society space. However, recent trends show democratic backsliding in some Northern states."
+            },
+            {
+                topic: "Technology",
+                question: "Internet penetration in Global North countries typically exceeds:",
+                options: [
+                    "50%",
+                    "70%",
+                    "90%",
+                    "100%"
+                ],
+                correct: 2,
+                explanation: "Global North: >90% internet penetration, 5G infrastructure, fiber optics, digital government services. This contrasts with Global South where digital divide persists, though mobile penetration is high (leapfrogging potential)."
+            },
+            {
+                topic: "Technology",
+                question: "The Global North dominates in R&D investment, typically spending:",
+                options: [
+                    "Less than 0.5% of GDP",
+                    "More than 2% of GDP",
+                    "Exactly 1% of GDP",
+                    "Nothing on research"
+                ],
+                correct: 1,
+                explanation: "Global North countries typically spend >2% of GDP on R&D (South Korea 4.8%, Japan 3.3%, US 3.1%). This creates technological leadership in AI, biotechnology, and clean energy, though China (Global South transition) is catching up (2.4%)."
+            },
+            {
+                topic: "Social",
+                question: "Tertiary education rates in the Global North typically exceed:",
+                options: [
+                    "10%",
+                    "25%",
+                    "50%",
+                    "90%"
+                ],
+                correct: 2,
+                explanation: "Global North: tertiary education rates >50% (some countries >70%). Features research universities, strong STEM programs, and academic publishing dominance. Global South improving but quality gaps remain (brain drain issue)."
+            },
+            {
+                topic: "Health",
+                question: "Life expectancy in Global North countries generally exceeds:",
+                options: [
+                    "60 years",
+                    "70 years",
+                    "80 years",
+                    "90 years"
+                ],
+                correct: 2,
+                explanation: "Life expectancy in Global North generally >80 years (Japan 84, Switzerland 83, Australia 83). Reflects universal healthcare (mostly), nutrition, sanitation, and medical technology. Global South ranges 65-75 years with significant variation."
+            },
+            {
+                topic: "Development",
+                question: "The Human Development Index (HDI) threshold for 'very high' development is:",
+                options: [
+                    "Above 0.5",
+                    "Above 0.7",
+                    "Above 0.8",
+                    "Above 0.9"
+                ],
+                correct: 2,
+                explanation: "UNDP HDI classification: Low <0.55; Medium 0.55-0.70; High 0.70-0.80; Very High >0.80. Global North countries typically >0.85 (Norway 0.966, Ireland 0.955). HDI combines life expectancy, education, and GNI per capita."
+            },
+            {
+                topic: "Examples",
+                question: "Which of the following is NOT typically considered part of the Global North?",
+                options: [
+                    "Germany",
+                    "Japan",
+                    "Brazil",
+                    "Canada"
+                ],
+                correct: 2,
+                explanation: "Brazil is upper-middle income (HDI 0.765) with significant development challenges (inequality, crime, infrastructure gaps), firmly Global South despite being in Western Hemisphere. Germany, Japan, and Canada are core Global North (G7 members)."
+            },
+            {
+                topic: "Examples",
+                question: "Singapore is sometimes considered part of the Global North despite its geography because:",
+                options: [
+                    "It is in the Northern Hemisphere",
+                    "It has high-income economy and advanced development status",
+                    "It is a former British colony",
+                    "It is a member of the EU"
+                ],
+                correct: 1,
+                explanation: "Singapore (GDP per capita >$80,000, HDI 0.939) is a high-income advanced economy with world-class infrastructure, financial center status, and technological innovation. This demonstrates the socio-economic rather than geographical nature of the North-South divide."
+            },
+            {
+                topic: "Contributions",
+                question: "A major contribution of the Global North to global development is:",
+                options: [
+                    "Raw material exports",
+                    "Technological innovation and R&D",
+                    "Low-cost manufacturing",
+                    "Agricultural labor"
+                ],
+                correct: 1,
+                explanation: "Global North contributes technological innovation (internet, medical breakthroughs, renewable energy), development financing (though often below 0.7% GDP target), normative frameworks (human rights conventions), and scientific research (global public goods like GPS, disease eradication)."
+            },
+            {
+                topic: "ODA",
+                question: "The Global North's contribution to development financing includes:",
+                options: [
+                    "Only private investment",
+                    "Official Development Assistance (ODA) and multilateral funding",
+                    "Nothing significant",
+                    "Only military aid"
+                ],
+                correct: 1,
+                explanation: "ODA includes grants and concessional loans from bilateral agencies (USAID, DFID, JICA) and multilateral contributions (World Bank, UN agencies). However, most Northern states fail to meet the 0.7% GNI target (established 1970, only 5 countries consistently meet it)."
+            },
+            {
+                topic: "ODA",
+                question: "The target for ODA as percentage of donor GDP established by the UN is:",
+                options: [
+                    "0.1%",
+                    "0.7%",
+                    "1.5%",
+                    "5%"
+                ],
+                correct: 1,
+                explanation: "The 0.7% ODA/GNI target was adopted by UN General Assembly in 1970 (Resolution 2626). In 2022, only 5 DAC members met it: Luxembourg, Norway, Sweden, Germany, and Denmark. US provides most in absolute terms but only 0.24% of GNI."
+            },
+            {
+                topic: "Climate",
+                question: "Global North countries have contributed approximately what percentage of historical carbon emissions?",
+                options: [
+                    "25%",
+                    "50%",
+                    "79%",
+                    "90%"
+                ],
+                correct: 2,
+                explanation: "Global North responsible for ~79% of historical CO2 emissions (1850-2020) due to early industrialization. This creates 'climate debt' and obligations under 'common but differentiated responsibilities' (CBDR) principle in UNFCCC and Paris Agreement."
+            },
+            {
+                topic: "Climate",
+                question: "The unmet promise of climate finance from Global North to South is:",
+                options: [
+                    "$10 billion annually",
+                    "$50 billion annually",
+                    "$100 billion annually",
+                    "$500 billion annually"
+                ],
+                correct: 2,
+                explanation: "Copenhagen Accord (2009) promised $100 billion annually by 2020 for climate mitigation/adaptation in developing countries. This target was missed and remains unmet, creating trust deficit in climate negotiations. New Collective Quantified Goal (NCQG) being negotiated for post-2025."
+            },
+            {
+                topic: "Migration",
+                question: "'Brain drain' from South to North refers to:",
+                options: [
+                    "Intelligence tests",
+                    "Migration of educated professionals to developed countries",
+                    "Technology transfer",
+                    "Educational exchanges"
+                ],
+                correct: 1,
+                explanation: "Brain drain is the emigration of highly skilled workers (doctors, engineers, scientists) from Global South to North, depriving origin countries of human capital invested through education. Remittances partially offset losses but don't replace skills."
+            },
+            {
+                topic: "Economy",
+                question: "Tax havens in or controlled by Global North countries cost Global South countries approximately:",
+                options: [
+                    "$1 billion annually",
+                    "$10 billion annually",
+                    "$100 billion+ annually",
+                    "Nothing"
+                ],
+                correct: 2,
+                explanation: "Illicit financial flows including tax evasion, transfer pricing, and corruption cost Global South $100+ billion annually (UNCTAD estimates). This exceeds ODA flows and undermines development. OECD/G20 BEPS project (Base Erosion and Profit Shifting) attempts reform."
+            },
+            {
+                topic: "Trade",
+                question: "Agricultural subsidies in Global North countries primarily harm Global South by:",
+                options: [
+                    "Increasing food prices",
+                    "Blocking market access for Southern agricultural exports",
+                    "Reducing Northern food consumption",
+                    "Improving Southern technology"
+                ],
+                correct: 1,
+                explanation: "Northern agricultural subsidies (US Farm Bill, EU CAP) allow overproduction and dumping on world markets, depressing prices and blocking Southern producers from competing. This was a major issue in Doha Round (2001-2015) which collapsed partly over this."
+            },
+            {
+                topic: "Policy",
+                question: "The 'Washington Consensus' of the 1990s imposed on Global South countries emphasized:",
+                options: [
+                    "State-led development",
+                    "Privatization, deregulation, and free trade",
+                    "Agricultural subsidies",
+                    "Import substitution"
+                ],
+                correct: 1,
+                explanation: "Washington Consensus (Williamson, 1989) prescribed 10 policy reforms: fiscal discipline, public expenditure priorities, tax reform, financial liberalization, competitive exchange rates, trade liberalization, FDI promotion, privatization, deregulation, and property rights. Led to mixed results and criticism."
+            },
+            {
+                topic: "Economy",
+                question: "Global South countries have contributed approximately what percentage of global GDP growth since 2008?",
+                options: [
+                    "10%",
+                    "30%",
+                    "60%+",
+                    "90%"
+                ],
+                correct: 2,
+                explanation: "Since 2008 financial crisis, Global South has contributed 60%+ of global GDP growth, driven by China, India, and emerging markets. This shifting economic gravity drives demands for governance reform (IMF quotas, World Bank voting shares) and creates 'rising power' dynamics."
+            },
+            {
+                topic: "Peacekeeping",
+                question: "Major troop contributors to UN peacekeeping operations are predominantly from:",
+                options: [
+                    "Global North countries",
+                    "Global South countries (Bangladesh, India, Rwanda, etc.)",
+                    "Permanent members of Security Council",
+                    "European Union members only"
+                ],
+                correct: 1,
+                explanation: "Global South provides most UN peacekeeping troops (Bangladesh, India, Pakistan, Rwanda, Ethiopia top contributors). Global North provides funding and leadership but few troops (exception: France in Mali). This creates 'triangular gap' between mandates, resources, and capabilities."
+            },
+            {
+                topic: "Environment",
+                question: "The Amazon Basin, Congo Basin, and Southeast Asian forests are primarily located in:",
+                options: [
+                    "Global North",
+                    "Global South",
+                    "Arctic regions",
+                    "Antarctica"
+                ],
+                correct: 1,
+                explanation: "These critical ecosystems (lungs of the Earth) are in Global South (Brazil, DRC, Indonesia). They provide global public goods (carbon sequestration, biodiversity) but face deforestation pressures from agricultural expansion, logging, and mining."
+            },
+            {
+                topic: "Diplomacy",
+                question: "India's 'Voice of Global South' summits (2023-2024) demonstrate:",
+                options: [
+                    "Northern dominance of diplomacy",
+                    "Southern assertiveness in international forums",
+                    "The end of the Global South concept",
+                    "Western control of international institutions"
+                ],
+                correct: 1,
+                explanation: "January 2023 and August 2024 summits brought together 120+ developing countries to articulate priorities before G20 meetings. Represents Southern agency in reshaping multilateralism, demanding reform of Bretton Woods institutions, and challenging Northern policy imposition."
+            },
+            {
+                topic: "BRICS",
+                question: "BRICS expansion in 2024 (adding Saudi Arabia, UAE, Iran, Egypt, Ethiopia, Argentina) represents:",
+                options: [
+                    "Northern economic consolidation",
+                    "Shifting power dynamics and Southern institutional alternatives",
+                    "NATO expansion",
+                    "EU enlargement"
+                ],
+                correct: 1,
+                explanation: "BRICS expansion to 10 members (2024) represents alternative platform for Global South interests, challenging Western-dominated institutions. New members bring energy resources (Saudi Arabia, UAE, Iran) and African representation (Egypt, Ethiopia)."
+            },
+            {
+                topic: "Demographics",
+                question: "The Global South's 'youth bulge' represents:",
+                options: [
+                    "A demographic crisis only",
+                    "Future workforce potential and innovation capacity",
+                    "Retirement burden",
+                    "Declining population"
+                ],
+                correct: 1,
+                explanation: "With median age 18-30, the youth bulge offers demographic dividend if education and employment opportunities exist. Risk of radicalization and instability if youth unemployment persists. Contrasts with North's aging burden and labor shortages."
+            },
+            {
+                topic: "Economy",
+                question: "Which of the following is a characteristic of Global South economies?",
+                options: [
+                    "Dominance of service sector (>70% GDP)",
+                    "Commodity dependence and vulnerability to price shocks",
+                    "High R&D spending (>2% GDP)",
+                    "Aging populations"
+                ],
+                correct: 1,
+                explanation: "Many Global South economies depend on commodity exports (oil, minerals, agricultural products) vulnerable to price volatility and 'resource curse.' Attempts at industrialization face competition from established Northern firms and rising automation."
+            },
+            {
+                topic: "Labor",
+                question: "The informal economy in Global South countries employs approximately:",
+                options: [
+                    "100 million workers",
+                    "500 million workers",
+                    "2 billion workers",
+                    "No workers"
+                ],
+                correct: 2,
+                explanation: "ILO estimates ~2 billion workers (60%+ of global workforce) in informal economy, concentrated in Global South. Characterized by lack of social protection, labor rights, and tax revenue. Challenge for sustainable development and inequality reduction."
+            },
+            {
+                topic: "Health",
+                question: "Life expectancy in most Global South countries ranges between:",
+                options: [
+                    "40-50 years",
+                    "65-75 years",
+                    "80-90 years",
+                    "95-100 years"
+                ],
+                correct: 1,
+                explanation: "Global South life expectancy ranges 65-75 years (India 70, Nigeria 55, Brazil 76). Lower than North due to infectious diseases, maternal/child mortality, and emerging non-communicable diseases ('double burden')."
+            },
+            {
+                topic: "Health",
+                question: "The Global South faces a 'double burden' of disease referring to:",
+                options: [
+                    "Only infectious diseases",
+                    "Only non-communicable diseases",
+                    "Both infectious diseases and rising non-communicable diseases",
+                    "Mental health only"
+                ],
+                correct: 2,
+                explanation: "Global South simultaneously faces persistent infectious diseases (HIV/AIDS, malaria, TB) and rapidly rising non-communicable diseases (diabetes, cardiovascular disease, cancer) due to aging, urbanization, and lifestyle changes. Strains health systems designed for acute care."
+            },
+            {
+                topic: "Infrastructure",
+                question: "Which of the following is NOT typically a characteristic of Global South infrastructure?",
+                options: [
+                    "Universal electrification",
+                    "Infrastructure gaps in energy and transport",
+                    "Rapid unplanned urbanization",
+                    "Digital divide challenges"
+                ],
+                correct: 0,
+                explanation: "Global South faces infrastructure deficits: 770 million people lack electricity (mostly in Sub-Saharan Africa), transport gaps hinder trade, and 2 billion lack safe drinking water. 'Leapfrogging' potential exists (solar, mobile banking) but investment gaps remain."
+            },
+            {
+                topic: "Technology",
+                question: "'Leapfrogging' in Global South development refers to:",
+                options: [
+                    "Jumping over physical obstacles",
+                    "Adopting advanced technologies without intermediate stages (e.g., mobile banking)",
+                    "Military conquest",
+                    "Brain drain reversal"
+                ],
+                correct: 1,
+                explanation: "Leapfrogging allows Global South to skip outdated technologies: Kenya's M-Pesa (mobile banking without traditional banking infrastructure), solar power (bypassing grid expansion), and telemedicine. Reduces development time but requires digital literacy and infrastructure."
+            },
+            {
+                topic: "Diplomacy",
+                question: "The G77 (Group of 77) in the UN represents:",
+                options: [
+                    "77 richest countries",
+                    "Developing nations' coalition in economic negotiations",
+                    "European countries",
+                    "NATO members"
+                ],
+                correct: 1,
+                explanation: "Founded 1964, now 134 members, the G77 is the largest intergovernmental organization of developing states in UN. Coordinates negotiating positions on trade, development financing, and climate justice. China often aligns but is not formal member."
+            },
+            {
+                topic: "Examples",
+                question: "Which country is NOT typically classified as part of the Global South?",
+                options: [
+                    "Nigeria",
+                    "Bangladesh",
+                    "Norway",
+                    "Vietnam"
+                ],
+                correct: 2,
+                explanation: "Norway is high-income (GDP per capita >$90,000), top HDI (0.966), and consistently meets 0.7% ODA target. Nigeria, Bangladesh, and Vietnam are developing economies with lower HDI and income levels, firmly in Global South despite Vietnam's rapid growth."
+            },
+            {
+                topic: "Climate",
+                question: "The Global South's contribution to historical CO2 emissions is approximately:",
+                options: [
+                    "75%",
+                    "50%",
+                    "25%",
+                    "5%"
+                ],
+                correct: 2,
+                explanation: "Global South contributed ~25% of historical emissions (1850-2020) but faces disproportionate climate impacts (extreme weather, sea-level rise, agricultural disruption). This inequity drives demands for climate justice and differentiated responsibilities in UNFCCC negotiations."
+            },
+            {
+                topic: "Climate",
+                question: "Climate vulnerability in the Global South is characterized by:",
+                options: [
+                    "Lower temperatures",
+                    "Greater exposure to extreme weather despite lower historical emissions",
+                    "Better infrastructure to handle climate change",
+                    "No vulnerability"
+                ],
+                correct: 1,
+                explanation: "Paradox of climate change: Global South faces greater vulnerability (tropical storms, droughts, flooding, sea-level rise threatening Pacific islands and Bangladesh) despite minimal contribution to causes. Adaptation finance is critical but underfunded."
+            },
+            {
+                topic: "Environment",
+                question: "Deforestation threats from the Global South primarily affect:",
+                options: [
+                    "Only local environments",
+                    "Global climate regulation and biodiversity (Amazon, Congo, Borneo)",
+                    "Northern economies positively",
+                    "Nothing significant"
+                ],
+                correct: 1,
+                explanation: "Tropical deforestation (Global South) affects global carbon cycle and biodiversity (80% of terrestrial species). Amazon 'tipping point,' Congo Basin degradation, and Southeast Asian palm oil expansion have planetary consequences requiring international cooperation."
+            },
+            {
+                topic: "Security",
+                question: "The Sahel region in Africa represents a Global South security threat through:",
+                options: [
+                    "Economic prosperity",
+                    "Terrorism, instability, and refugee flows affecting regional and global security",
+                    "Technological innovation",
+                    "Climate change mitigation"
+                ],
+                correct: 1,
+                explanation: "Sahel crisis (Mali, Burkina Faso, Niger, Chad) involves jihadist insurgencies, military coups, climate-induced food insecurity, and displacement (4+ million refugees). Spills over to coastal West Africa and creates migration pressure toward Europe."
+            },
+            {
+                topic: "Health",
+                question: "Pandemic risks emerging from the Global South are heightened by:",
+                options: [
+                    "Advanced healthcare systems",
+                    "Zoonotic disease emergence and weak health surveillance",
+                    "Low population density",
+                    "Strict border controls"
+                ],
+                correct: 1,
+                explanation: "Global South hotspots for zoonotic spillover (wet markets, deforestation, wildlife trade) combined with weak health systems and surveillance (illustrated by COVID-19 origins and spread). WHO's International Health Regulations (2005) compliance gaps."
+            },
+            {
+                topic: "Security",
+                question: "Youth unemployment in the Global South creates risks of:",
+                options: [
+                    "Economic growth only",
+                    "Radicalization, migration pressure, and social instability",
+                    "Improved education outcomes",
+                    "Technological innovation"
+                ],
+                correct: 1,
+                explanation: "Youth unemployment (often 20-30% in MENA, Sub-Saharan Africa) creates fertile ground for extremist recruitment, irregular migration to North, and social unrest (Arab Spring catalyst). Demographic dividend requires job creation."
+            },
+            {
+                topic: "Economy",
+                question: "Debt distress in Global South countries (e.g., Zambia, Sri Lanka defaults) affects global stability by:",
+                options: [
+                    "Strengthening Northern banks only",
+                    "Creating financial contagion and limiting development investment",
+                    "Improving credit ratings",
+                    "Increasing foreign investment"
+                ],
+                correct: 1,
+                explanation: "Sovereign debt crises (Zambia 2020, Sri Lanka 2022, Ghana 2022) trigger banking sector stress (Chinese and Western creditors), reduce development spending, and create instability. G20 Common Framework for Debt Treatments (2020) response has been slow."
+            },
+            {
+                topic: "Climate Justice",
+                question: "The concept of 'climate justice' emphasizes:",
+                options: [
+                    "Equal per capita emissions for all countries",
+                    "Historical responsibility of Global North for emissions and support for Global South adaptation",
+                    "Southern countries reducing emissions while North increases",
+                    "Ignoring climate change"
+                ],
+                correct: 1,
+                explanation: "Climate justice framework: Common But Differentiated Responsibilities (CBDR) recognizes historical emissions disparity. North owes 'climate debt' for space occupied in atmosphere. Requires mitigation by North, adaptation finance for South, and loss/damage mechanisms."
+            },
+            {
+                topic: "Technology",
+                question: "Technology transfer from North to South is important because:",
+                options: [
+                    "The South has too much technology",
+                    "It can help bridge innovation gaps and support sustainable development",
+                    "The North refuses to share any technology",
+                    "It increases dependency"
+                ],
+                correct: 1,
+                explanation: "Technology transfer (Article 66 of TRIPS Agreement; Paris Agreement Article 10) is essential for Southern climate mitigation/adaptation and SDG achievement. Controversy over intellectual property rights vs. public interest (COVID-19 vaccine patents)."
+            },
+            {
+                topic: "Digital Divide",
+                question: "The 'digital divide' between North and South refers to:",
+                options: [
+                    "Different time zones",
+                    "Gap in access to internet and digital technologies",
+                    "Different languages used online",
+                    "Different types of computers"
+                ],
+                correct: 1,
+                explanation: "Digital divide encompasses access (infrastructure), use (skills/literacy), and outcomes (economic benefits). Global South lags in broadband, 5G, and AI development. UN Tech Envoy and ITU focus on 'meaningful connectivity' as development priority."
+            },
+            {
+                topic: "Cooperation",
+                question: "South-South cooperation refers to:",
+                options: [
+                    "Trade between Northern countries",
+                    "Collaboration among developing countries without Northern involvement",
+                    "Military alliances in the South",
+                    "Colonial relationships"
+                ],
+                correct: 1,
+                explanation: "South-South cooperation (SSC) includes trade, investment, technology sharing, and technical assistance among developing countries (e.g., India's Lines of Credit, China's Belt and Road, Brazil's agricultural cooperation). Complements but doesn't replace North-South cooperation."
+            },
+            {
+                topic: "Development",
+                question: "The New Partnership for Africa's Development (NEPAD) represents:",
+                options: [
+                    "Northern aid to Africa",
+                    "African-owned development framework and South-South cooperation",
+                    "Colonial administration",
+                    "Military intervention"
+                ],
+                correct: 1,
+                explanation: "NEPAD (2001, now African Union Development Agency) is African-owned and led framework for development, good governance, and regional integration. Emphasizes African solutions, peer review mechanism (APRM), and partnerships on equal terms."
+            },
+            {
+                topic: "Governance",
+                question: "Global governance reform demands from the Global South include:",
+                options: [
+                    "Maintaining current IMF voting shares",
+                    "Greater representation in international institutions (IMF, World Bank, UN Security Council)",
+                    "Reducing their own voting power",
+                    "Abolishing the United Nations"
+                ],
+                correct: 1,
+                explanation: "Global South demands: IMF quota reform (China #2 economy has lower quota than Japan); World Bank voting shares; UN Security Council expansion (G4: India, Brazil, Germany, Japan; African Union 2 seats); WTO special and differential treatment."
+            },
+            {
+                topic: "UN Reform",
+                question: "The 'Pact for the Future' adopted by the UN General Assembly (September 2024) addressed:",
+                options: [
+                    "Only Northern security concerns",
+                    "Global governance reform and SDG acceleration, with strong Global South input",
+                    "Abolishing the Global South concept",
+                    "Increasing veto powers"
+                ],
+                correct: 1,
+                explanation: "Adopted at Summit of the Future (September 2024), the Pact includes Global Digital Compact and Declaration on Future Generations. Addresses SDG acceleration, climate action, and governance reform with input from Global South through preparatory consultations."
+            },
+            {
+                topic: "Interdependence",
+                question: "Understanding threats posed by both North and South is important because:",
+                options: [
+                    "Only Northern threats matter",
+                    "Interdependence means instability anywhere affects global security and prosperity",
+                    "Southern threats are imaginary",
+                    "Northern threats don't exist"
+                ],
+                correct: 1,
+                explanation: "Globalization creates 'spillover' effects: Southern instability (pandemics, terrorism, climate migration, financial contagion) affects North; Northern policies (emissions, trade protectionism, financial speculation) affect South. Addressing divides is enlightened self-interest for all."
+            },
+            {
+                topic: "Conclusion",
+                question: "The most accurate statement about the Global North-South divide is:",
+                options: [
+                    "It is strictly geographical and unchanging",
+                    "It represents structural inequalities but allows for mobility and changing dynamics (e.g., China's rise)",
+                    "It has been completely eliminated",
+                    "It only concerns economic issues"
+                ],
+                correct: 1,
+                explanation: "The divide is structural but dynamic: countries can transition (South Korea, Singapore joined North; China in process). It encompasses economic, political, technological, and environmental dimensions. Complete elimination hasn't occurred, but mobility exists through development."
+            },
+            {
+                topic: "Conclusion",
+                question: "The ultimate goal of addressing Global North-South divides in contemporary global governance is to:",
+                options: [
+                    "Maintain permanent inequality",
+                    "Achieve more equitable, sustainable, and inclusive global development",
+                    "Isolate the Global South",
+                    "Transfer all wealth to the North"
+                ],
+                correct: 1,
+                explanation: "UN 2030 Agenda principle: 'Leave no one behind.' Addressing divides requires reforming unfair trade/financial systems, delivering climate justice, technology transfer, and inclusive governance. Benefits global stability, economic growth, and human security for all."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = new Array(100).fill(false);
+
+        function loadQuestion() {
+            const q = quizData[currentQuestion];
+            const container = document.getElementById('quizContent');
+            
+            let optionsHTML = '';
+            q.options.forEach((opt, index) => {
+                optionsHTML += `
+                    <div class="option" ondblclick="checkAnswer(${index})" id="option${index}">
+                        <div class="option-letter">${String.fromCharCode(65 + index)}</div>
+                        <div class="option-text">${opt}</div>
+                        <div class="status-icon" id="icon${index}"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="question-header">
+                    <div class="question-number">Question ${currentQuestion + 1}</div>
+                    <div class="topic-badge">${q.topic}</div>
+                </div>
+                <div class="question-text">${q.question}</div>
+                <div class="options-container">
+                    ${optionsHTML}
+                </div>
+                <div class="explanation" id="explanation">
+                    <div class="explanation-header">📚 Explanation</div>
+                    <div class="explanation-text">${q.explanation}</div>
+                </div>
+            `;
+
+            // Update progress
+            document.getElementById('currentQ').textContent = currentQuestion + 1;
+            document.getElementById('progressBar').style.width = ((currentQuestion + 1) / 100) * 100 + '%';
+            
+            // Update buttons
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').disabled = currentQuestion === 99;
+            
+            // If already answered, show the state
+            if (answered[currentQuestion]) {
+                revealAnswer();
+            }
+        }
+
+        function checkAnswer(selectedIndex) {
+            if (answered[currentQuestion]) return;
+            
+            const q = quizData[currentQuestion];
+            const correct = q.correct;
+            
+            answered[currentQuestion] = true;
+            
+            // Mark all options
+            for (let i = 0; i < 4; i++) {
+                const option = document.getElementById(`option${i}`);
+                const icon = document.getElementById(`icon${i}`);
+                
+                option.classList.add('revealed');
+                
+                if (i === correct) {
+                    option.classList.add('correct');
+                    icon.textContent = '✓';
+                } else if (i === selectedIndex && i !== correct) {
+                    option.classList.add('incorrect');
+                    icon.textContent = '✗';
+                }
+            }
+            
+            // Update score if correct
+            if (selectedIndex === correct) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            // Show explanation
+            document.getElementById('explanation').classList.add('show');
+        }
+
+        function revealAnswer() {
+            const q = quizData[currentQuestion];
+            const correct = q.correct;
+            
+            for (let i = 0; i < 4; i++) {
+                const option = document.getElementById(`option${i}`);
+                const icon = document.getElementById(`icon${i}`);
+                
+                option.classList.add('revealed');
+                
+                if (i === correct) {
+                    option.classList.add('correct');
+                    icon.textContent = '✓';
+                }
+            }
+            
+            document.getElementById('explanation').classList.add('show');
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 99) {
+                currentQuestion++;
+                loadQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        // Initialize
+        loadQuestion();
+    </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
